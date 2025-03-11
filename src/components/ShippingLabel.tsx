@@ -59,7 +59,7 @@ const ShippingLabel: React.FC<ShippingLabelProps> = ({
       <h2 className="text-2xl font-bold mb-4">Etiqueta de Entrega</h2>
 
       {/* Etiqueta de entrega (15x10 cm) */}
-      <Card className="w-[567px] h-[378px] p-4 border-2 border-gray-300 relative overflow-hidden print:w-[15cm] print:h-[10cm] print:shadow-none print:border-0 card-to-print">
+      <Card className="w-[567px] h-[378px] p-4 border-2 border-gray-300 relative overflow-hidden card-to-print">
         {/* Faixa de cor do pedido */}
         <div
           className={`absolute top-0 left-0 w-full h-10 ${colorClass} flex items-center justify-center`}

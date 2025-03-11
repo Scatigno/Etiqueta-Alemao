@@ -23,6 +23,25 @@
     padding: 0;
     border: none;
     box-shadow: none;
+    transform: scale(1);
+    transform-origin: top left;
+  }
+
+  /* Preservar cores e estilos exatos */
+  .card-to-print h3,
+  .card-to-print h4,
+  .card-to-print p,
+  .card-to-print span {
+    color: inherit !important;
+    font-size: inherit !important;
+    font-weight: inherit !important;
+  }
+
+  /* Garantir que a faixa colorida seja impressa */
+  .card-to-print [class*="bg-"] {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
   }
 
   .no-print {
