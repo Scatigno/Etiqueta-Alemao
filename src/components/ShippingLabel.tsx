@@ -28,11 +28,11 @@ const ShippingLabel: React.FC<ShippingLabelProps> = ({
   // Mapear cores para classes do Tailwind
   const getColorClass = (color: string) => {
     const colorMap: Record<string, string> = {
-      red: "bg-red-500",
-      blue: "bg-blue-500",
-      green: "bg-green-500",
-      yellow: "bg-yellow-500",
-      purple: "bg-purple-500",
+      vermelho: "bg-red-500",
+      azul: "bg-blue-500",
+      verde: "bg-green-500",
+      amarelo: "bg-yellow-500",
+      roxo: "bg-purple-500",
     };
 
     return colorMap[color?.toLowerCase()] || "bg-blue-500";

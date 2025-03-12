@@ -91,7 +91,7 @@ const DeliveryForm = ({ onSubmit = () => {} }: DeliveryFormProps) => {
       driverName: "",
     },
     boxCount: "1",
-    orderColor: "blue",
+    orderColor: "azul",
     maxDeliveryTime: "18:00",
   };
 
@@ -114,11 +114,11 @@ const DeliveryForm = ({ onSubmit = () => {} }: DeliveryFormProps) => {
   };
 
   const colorOptions = [
-    { value: "red", label: "Vermelho" },
-    { value: "blue", label: "Azul" },
-    { value: "green", label: "Verde" },
-    { value: "yellow", label: "Amarelo" },
-    { value: "purple", label: "Roxo" },
+    { value: "vermelho", label: "Vermelho" },
+    { value: "azul", label: "Azul" },
+    { value: "verde", label: "Verde" },
+    { value: "amarelo", label: "Amarelo" },
+    { value: "roxo", label: "Roxo" },
   ];
 
   return (
