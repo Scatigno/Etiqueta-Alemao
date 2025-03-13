@@ -119,6 +119,8 @@ const DeliveryForm = ({ onSubmit = () => {} }: DeliveryFormProps) => {
     { value: "verde", label: "Verde" },
     { value: "amarelo", label: "Amarelo" },
     { value: "roxo", label: "Roxo" },
+    { value: "laranja", label: "Laranja" },
+    { value: "preto", label: "Preto" },
   ];
 
   return (
@@ -363,7 +365,6 @@ const DeliveryForm = ({ onSubmit = () => {} }: DeliveryFormProps) => {
                             <RadioGroupItem
                               value={color.value}
                               id={`color-${color.value}`}
-                              className={`border-2 border-${color.value}-500`}
                             />
                           </FormControl>
                           <FormLabel
@@ -371,7 +372,25 @@ const DeliveryForm = ({ onSubmit = () => {} }: DeliveryFormProps) => {
                             className="flex items-center gap-2"
                           >
                             <div
-                              className={`h-4 w-4 rounded-full bg-${color.value}-500`}
+                              className={`h-4 w-4 rounded-full`}
+                              style={{
+                                backgroundColor:
+                                  color.value === "vermelho"
+                                    ? "#ef4444"
+                                    : color.value === "azul"
+                                      ? "#3b82f6"
+                                      : color.value === "verde"
+                                        ? "#22c55e"
+                                        : color.value === "amarelo"
+                                          ? "#eab308"
+                                          : color.value === "roxo"
+                                            ? "#a855f7"
+                                            : color.value === "laranja"
+                                              ? "#f97316"
+                                              : color.value === "preto"
+                                                ? "#000000"
+                                                : "#3b82f6",
+                              }}
                             ></div>
                             {color.label}
                           </FormLabel>

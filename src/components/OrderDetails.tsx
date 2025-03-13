@@ -25,7 +25,7 @@ const OrderDetails: React.FC = () => {
   const busName = searchParams.get("busName") || "";
   const driverName = searchParams.get("driverName") || "";
   const boxCount = searchParams.get("boxCount") || "1";
-  const orderColor = searchParams.get("orderColor") || "Azul";
+  const orderColor = searchParams.get("orderColor") || "azul";
 
   // Em uma aplicação real, você buscaria os dados do pedido de uma API
   // Aqui estamos usando os dados da URL
@@ -121,7 +121,10 @@ const OrderDetails: React.FC = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold">{orderData.orderColor}</p>
+              <p className="text-2xl font-bold">
+                {orderData.orderColor.charAt(0).toUpperCase() +
+                  orderData.orderColor.slice(1)}
+              </p>
             </CardContent>
           </Card>
 

@@ -33,9 +33,11 @@ const ShippingLabel: React.FC<ShippingLabelProps> = ({
       verde: "bg-green-500",
       amarelo: "bg-yellow-500",
       roxo: "bg-purple-500",
+      laranja: "bg-orange-500",
+      preto: "bg-black",
     };
 
-    return colorMap[color?.toLowerCase()] || "bg-blue-500";
+    return colorMap[color?.toLowerCase() || ""] || "bg-blue-500";
   };
 
   const colorClass = getColorClass(orderColor);
@@ -53,7 +55,9 @@ const ShippingLabel: React.FC<ShippingLabelProps> = ({
                 <h3 className="text-2xl font-bold">Pedido #{orderNumber}</h3>
                 <div className="flex items-center gap-2">
                   <div className={`w-4 h-4 rounded-full ${colorClass}`}></div>
-                  <span className="font-semibold">{orderColor}</span>
+                  <span className="font-semibold">
+                    {orderColor?.charAt(0).toUpperCase() + orderColor?.slice(1)}
+                  </span>
                 </div>
               </div>
 
@@ -92,7 +96,7 @@ const ShippingLabel: React.FC<ShippingLabelProps> = ({
 
             <div className="flex flex-col items-center justify-center">
               <QRCodeGenerator
-                value={`https://nostalgic-kare5-smhcp.dev.tempolabs.ai/pedido/${orderNumber}?maxTime=${encodeURIComponent(maxDeliveryTime || "18:00")}&orderColor=${encodeURIComponent(orderColor)}&boxCount=${encodeURIComponent(String(boxCount))}`}
+                value={`https://nostalgic-kare5-smhcp.dev.tempolabs.ai/pedido/${orderNumber}?maxTime=${encodeURIComponent(maxDeliveryTime || "18:00")}&orderColor=${encodeURIComponent(orderColor || "azul")}&boxCount=${encodeURIComponent(String(boxCount))}`}
                 size={150}
                 title=""
               />
