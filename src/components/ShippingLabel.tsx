@@ -42,6 +42,102 @@ const ShippingLabel: React.FC<ShippingLabelProps> = ({
 
   const colorClass = getColorClass(orderColor);
 
+  // Safely create QR code URL with proper error handling
+  const createQRCodeUrl = () => {
+    try {
+      const baseUrl = `https://nostalgic-kare5-smhcp.dev.tempolabs.ai/pedido/${orderNumber || "123"}`;
+      const params = new URLSearchParams();
+
+      // Add all parameters with safe fallbacks
+      params.append("maxTime", maxDeliveryTime || "18:00");
+      params.append("orderColor", orderColor || "azul");
+      params.append("boxCount", String(boxCount || 1));
+
+      // Extract address components from the formatted address string
+      try {
+        // Attempt to parse the address string into components
+        const addressParts = address.split(",");
+        if (addressParts.length >= 2) {
+          // Extract street and number from first part
+          const streetAndNumber = addressParts[0].trim().split(" ");
+          const streetNumber = streetAndNumber.pop() || "";
+          const street = streetAndNumber.join(" ");
+          params.append("street", street);
+          params.append("number", streetNumber);
+
+          // Extract complement if it exists (after a dash in the second part)
+          let complement = "";
+          let neighborhoodPart = addressParts[1].trim();
+          if (neighborhoodPart.includes(" - ")) {
+            const parts = neighborhoodPart.split(" - ");
+            complement = parts[0].trim();
+            neighborhoodPart = parts[1].trim();
+          }
+          params.append("complement", complement);
+
+          // Extract neighborhood
+          params.append("neighborhood", neighborhoodPart);
+
+          // Extract city and state
+          if (addressParts.length >= 3) {
+            const cityStatePart = addressParts[2].trim();
+            const cityStateArr = cityStatePart.split(" - ");
+            if (cityStateArr.length >= 2) {
+              params.append("city", cityStateArr[0].trim());
+
+              // Extract state and zipcode
+              const stateZipArr = cityStateArr[1].trim().split(", ");
+              if (stateZipArr.length >= 2) {
+                params.append("state", stateZipArr[0].trim());
+                params.append("zipCode", stateZipArr[1].trim());
+              } else {
+                // Se não conseguir extrair o CEP do formato esperado, tenta extrair diretamente
+                const zipCodeMatch = address.match(/(\d{5}-\d{3}|\d{8})/);
+                if (zipCodeMatch && zipCodeMatch[0]) {
+                  params.append("zipCode", zipCodeMatch[0]);
+                }
+              }
+            }
+          }
+        } else {
+          // Fallback if parsing fails
+          params.append("address", address || "");
+        }
+      } catch (error) {
+        console.error("Error parsing address:", error);
+        // Fallback to full address
+        params.append("address", address || "");
+      }
+
+      // Safely extract bus info components
+      if (busInfo) {
+        // Extract bus number if available
+        const busNumberMatch = busInfo.match(/Placa:\s*([^|]+)/);
+        if (busNumberMatch && busNumberMatch[1]) {
+          params.append("busNumber", busNumberMatch[1].trim());
+        }
+
+        // Extract bus name if available
+        const busNameMatch = busInfo.match(/Ônibus:\s*([^|]+)/);
+        if (busNameMatch && busNameMatch[1]) {
+          params.append("busName", busNameMatch[1].trim());
+        }
+
+        // Extract driver name if available
+        const driverNameMatch = busInfo.match(/Motorista:\s*(.+)$/);
+        if (driverNameMatch && driverNameMatch[1]) {
+          params.append("driverName", driverNameMatch[1].trim());
+        }
+      }
+
+      return `${baseUrl}?${params.toString()}`;
+    } catch (error) {
+      console.error("Error creating QR code URL:", error);
+      // Return a basic fallback URL if there's an error
+      return `https://nostalgic-kare5-smhcp.dev.tempolabs.ai/pedido/${orderNumber || "123"}`;
+    }
+  };
+
   return (
     <div className="flex flex-col gap-4">
       <Card className="w-[567px] h-[378px] p-4 border-2 border-gray-300 relative overflow-hidden card-to-print">
@@ -95,11 +191,7 @@ const ShippingLabel: React.FC<ShippingLabelProps> = ({
             </div>
 
             <div className="flex flex-col items-center justify-center">
-              <QRCodeGenerator
-                value={`https://nostalgic-kare5-smhcp.dev.tempolabs.ai/pedido/${orderNumber}?maxTime=${encodeURIComponent(maxDeliveryTime || "18:00")}&orderColor=${encodeURIComponent(orderColor || "azul")}&boxCount=${encodeURIComponent(String(boxCount))}`}
-                size={150}
-                title=""
-              />
+              <QRCodeGenerator value={createQRCodeUrl()} size={150} title="" />
             </div>
           </div>
 
